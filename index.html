@@ -8,18 +8,20 @@
     <style>
         :root {
             --dark-bg-color: #1a1a2e;
-            --dark-card-bg: #22223b;
-            --primary-accent: #00bcd4; /* Cyan */
-            --secondary-accent: #ffeb3b; /* Yellow */
-            --text-light: #e0e0e0;
-            --text-dark: #333;
+            --dark-container-bg: #1f1f33; /* Darker background for main container */
+            --category-card-bg: #2a2a47; /* Background for each category (e.g., Male Singles) */
+            --group-card-bg: #33334f; /* Background for individual Group A, B, C, D */
+            --primary-accent: #00bcd4; /* Cyan - for main titles */
+            --secondary-accent: #ffeb3b; /* Yellow - for sub-titles */
+            --text-light: #e0e0e0; /* General light text */
             --border-color: rgba(255, 255, 255, 0.1);
-            --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            --group-a-bg: #e91e63; /* Pink */
-            --group-b-bg: #673ab7; /* Deep Purple */
-            --group-c-bg: #009688; /* Teal */
-            --group-d-bg: #ff9800; /* Orange */
-            --group-e-bg: #4caf50; /* Green */
+            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Stronger shadow for main cards */
+            
+            /* Group specific colors - adjusted for image look */
+            --group-a-color: #7c2250; /* Darker Pinkish */
+            --group-b-color: #4b2a8d; /* Darker Purple */
+            --group-c-color: #006b60; /* Darker Teal */
+            --group-d-color: #b06e00; /* Darker Orange */
         }
         
         html, body {
@@ -39,18 +41,18 @@
             justify-content: center;
             text-align: center;
             box-sizing: border-box;
-            padding: 20px;
+            padding: 1.5vh 1.5vw; /* Responsive padding */
         }
 
         .dashboard-container {
             width: 100%;
             height: 100%;
-            max-width: 1920px;
-            max-height: 1080px; /* Adjust for common projector aspect ratios */
-            background-color: var(--dark-card-bg);
-            border-radius: 20px;
-            box-shadow: var(--card-shadow);
-            padding: 20px;
+            max-width: 1920px; /* Standard large monitor width */
+            max-height: 1080px; /* Standard large monitor height */
+            background-color: var(--dark-container-bg);
+            border-radius: 15px; /* Slightly less rounded */
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7); /* More prominent outer shadow */
+            padding: 2vh 2vw; /* Responsive padding */
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
@@ -59,115 +61,144 @@
 
         .main-heading {
             font-family: 'Press Start 2P', cursive;
-            font-size: 2.5vh; /* Use viewport height for responsiveness */
-            color: var(--primary-accent);
+            font-size: 2.8vh; /* Larger main title */
+            color: var(--secondary-accent); /* Yellow as in image */
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
+            letter-spacing: 3px;
+            margin-bottom: 0.5vh;
+            text-shadow: 0 0 10px rgba(255, 235, 59, 0.5), 0 0 20px rgba(255, 235, 59, 0.3); /* Neon glow */
+            line-height: 1.1;
         }
 
         .sub-heading {
             font-family: 'Press Start 2P', cursive;
-            font-size: 1.5vh;
-            color: var(--secondary-accent);
+            font-size: 1.8vh; /* Larger sub-title */
+            color: var(--primary-accent); /* Cyan as in image */
             text-transform: uppercase;
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: 2.5vh;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+            line-height: 1.1;
         }
 
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(4, 1fr); /* Fixed 4 columns as in image */
+            gap: 2vw; /* Gap between major categories, responsive */
             flex-grow: 1;
-            align-items: stretch;
+            align-items: stretch; /* Stretch cards to fill height */
+            justify-items: center;
         }
 
         .category-card {
-            background-color: #2a2a47;
+            background-color: var(--category-card-bg); /* Darker purple-blue */
             border-radius: 10px;
-            padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            padding: 1.5vh 1vw; /* Responsive padding */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Shadow for category cards */
+            display: flex;
+            flex-direction: column;
+            width: 100%; /* Ensure it fills grid column */
+            box-sizing: border-box;
+        }
+
+        .category-title {
+            font-family: 'Chakra Petch', sans-serif; /* As in image */
+            font-size: 2.2vh; /* Larger title */
+            font-weight: 700;
+            color: var(--secondary-accent); /* Yellow as in image */
+            text-align: center;
+            margin-bottom: 1.5vh;
+            border-bottom: 2px solid var(--primary-accent); /* Cyan border */
+            padding-bottom: 0.8vh;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 5px rgba(255, 235, 59, 0.3);
+        }
+
+        .group-container-wrapper {
+            flex-grow: 1; /* Allows group containers to take up available space */
+            display: flex;
+            flex-direction: column;
+            gap: 1.5vh; /* Gap between individual group cards */
+        }
+
+        .group-card {
+            background-color: var(--group-card-bg); /* Darker base for groups */
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Subtle inner shadow */
+            padding: 1vh 0.8vw; /* Responsive padding */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            text-align: left; /* Align text left as in image */
             display: flex;
             flex-direction: column;
         }
 
-        .category-title {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1.6vh;
-            color: var(--primary-accent);
-            text-align: center;
-            margin-bottom: 15px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 5px;
-        }
-
-        .group-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            flex-grow: 1;
-            padding-top: 5px;
-        }
-
-        .group-card {
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
-        }
-        
-        .group-card.group-A { background-color: var(--group-a-bg); }
-        .group-card.group-B { background-color: var(--group-b-bg); }
-        .group-card.group-C { background-color: var(--group-c-bg); }
-        .group-card.group-D { background-color: var(--group-d-bg); }
+        /* Overriding group card background with specific colors from image */
+        .group-card.group-A { background-color: var(--group-a-color); }
+        .group-card.group-B { background-color: var(--group-b-color); }
+        .group-card.group-C { background-color: var(--group-c-color); }
+        .group-card.group-D { background-color: var(--group-d-color); }
         
         .group-card h4 {
             font-family: 'Chakra Petch', sans-serif;
-            font-size: 1.2vh;
+            font-size: 1.5vh; /* Group title font size */
             font-weight: 700;
-            color: #fff;
-            margin: 0 0 8px 0;
-            text-align: center;
+            color: var(--text-light); /* White/light grey for group title */
+            margin: 0 0 0.8vh 0;
+            text-align: left; /* Group title also left-aligned */
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+            padding-bottom: 0.4vh;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Subtle separator */
         }
 
         .group-card ul {
             list-style-type: none;
             padding: 0;
             margin: 0;
+            flex-grow: 1; /* Allow ul to expand */
         }
 
         .group-card li {
-            padding: 5px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-            font-size: 1.1vh;
-            color: #fff;
+            padding: 0.5vh 0;
+            font-size: 1.3vh; /* Participant name font size */
+            color: var(--text-light);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Lighter separator */
+            line-height: 1.2;
         }
         .group-card li:last-child { border-bottom: none; }
 
-        @media (orientation: portrait) {
-            body {
-                padding: 10px;
-                flex-direction: column;
-            }
+        /* Media queries for very small screens or portrait mode, though meant for landscape */
+        @media (max-aspect-ratio: 16/9) {
             .dashboard-container {
-                padding: 10px;
-                height: auto;
+                padding: 1.5vh 1vw;
             }
+            .main-heading { font-size: 2.2vh; }
+            .sub-heading { font-size: 1.4vh; margin-bottom: 1.5vh; }
+            .category-grid { 
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Allow wrapping */
+                gap: 1.5vw; 
+            }
+            .category-title { font-size: 1.8vh; }
+            .group-card h4 { font-size: 1.3vh; }
+            .group-card li { font-size: 1.1vh; }
         }
     </style>
 </head>
 <body>
 
     <div class="dashboard-container">
-        <h1 class="main-heading">Clinix Cup 2025</h1>
-        <h2 class="sub-heading">Tournament Grouping Dashboard</h2>
+        <h1 class="main-heading">CLINIX CUP 2025</h1>
+        <h2 class="sub-heading">TOURNAMENT GROUPING DASHBOARD</h2>
 
         <div class="category-grid">
 
             <div class="category-card">
                 <div class="category-title">Male Singles</div>
-                <div class="group-grid">
+                <div class="group-container-wrapper">
                     <div class="group-card group-A">
                         <h4>Group A</h4>
                         <ul>
@@ -179,8 +210,8 @@
                     <div class="group-card group-B">
                         <h4>Group B</h4>
                         <ul>
-                            <li>Muhd Nasamudin</li>
-                            <li>Muhd Danial Z</li>
+                            <li>Muhd Nasarudin</li>
+                            <li>Muhd Danial Zulkepli</li>
                             <li>Muhd Arif Nasri</li>
                             <li>Dr Ow Ji Ken</li>
                         </ul>
@@ -189,7 +220,7 @@
                         <h4>Group C</h4>
                         <ul>
                             <li>Zahid</li>
-                            <li>Dr Mohd Asri</li>
+                            <li>Dr Mohd Azri</li>
                             <li>Faiz Mashood</li>
                         </ul>
                     </div>
@@ -206,7 +237,7 @@
 
             <div class="category-card">
                 <div class="category-title">Female Singles</div>
-                <div class="group-grid">
+                <div class="group-container-wrapper">
                     <div class="group-card group-A">
                         <h4>Group A</h4>
                         <ul>
@@ -218,7 +249,7 @@
                     <div class="group-card group-B">
                         <h4>Group B</h4>
                         <ul>
-                            <li>Nawa</li>
+                            <li>Nawwar Nazihah</li>
                             <li>Nabila</li>
                             <li>Wani Irdina</li>
                         </ul>
@@ -236,7 +267,7 @@
                         <ul>
                             <li>Jassie Teo</li>
                             <li>Aimie</li>
-                            <li>Rohaida Abdullah</li>
+                            <li>Ruhaida Abdullah</li>
                         </ul>
                     </div>
                 </div>
@@ -244,7 +275,7 @@
 
             <div class="category-card">
                 <div class="category-title">Male Doubles</div>
-                <div class="group-grid">
+                <div class="group-container-wrapper">
                     <div class="group-card group-A">
                         <h4>Group A</h4>
                         <ul>
@@ -284,7 +315,7 @@
             
             <div class="category-card">
                 <div class="category-title">Female Doubles</div>
-                <div class="group-grid">
+                <div class="group-container-wrapper">
                     <div class="group-card group-A">
                         <h4>Group A</h4>
                         <ul>
@@ -316,7 +347,7 @@
 
             <div class="category-card">
                 <div class="category-title">Mixed Doubles</div>
-                <div class="group-grid">
+                <div class="group-container-wrapper">
                     <div class="group-card group-A">
                         <h4>Group A</h4>
                         <ul>
