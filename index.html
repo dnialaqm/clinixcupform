@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinix Cup 2025 - Group Draw</title>
+    <title>Clinix Cup 2025 - Grouping Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -15,1259 +15,358 @@
             --text-dark: #333;
             --border-color: rgba(255, 255, 255, 0.1);
             --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            --button-hover-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
             --group-a-bg: #e91e63; /* Pink */
             --group-b-bg: #673ab7; /* Deep Purple */
             --group-c-bg: #009688; /* Teal */
             --group-d-bg: #ff9800; /* Orange */
             --group-e-bg: #4caf50; /* Green */
         }
-
+        
         body {
             font-family: 'Chakra Petch', sans-serif;
             background: linear-gradient(135deg, #1a1a2e, #16213e);
             color: var(--text-light);
             margin: 0;
-            padding: 20px;
+            padding: 30px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
-            min-height: 100vh;
-            overflow: hidden;
-            font-size: 16px;
             box-sizing: border-box;
+            text-align: center;
         }
 
-        .navbar {
+        .dashboard-container {
             width: 100%;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .navbar a {
-            font-family: 'Chakra Petch', sans-serif;
-            text-decoration: none;
-            color: var(--text-light);
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9em;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            background-color: var(--dark-card-bg);
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-        }
-        
-        .navbar a.active {
-            background-color: var(--primary-accent);
-            color: var(--text-dark);
-            box-shadow: 0 6px 15px rgba(0, 188, 212, 0.4);
-            border-color: var(--primary-accent);
-        }
-
-        .navbar a:hover:not(.active) {
-            transform: translateY(-3px);
-            background-color: #31314f;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .navbar a.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1700px;
+            max-width: 1920px;
             background-color: var(--dark-card-bg);
             border-radius: 20px;
             box-shadow: var(--card-shadow);
-            padding: 30px;
+            padding: 40px;
             box-sizing: border-box;
             border: 2px solid var(--primary-accent);
-            position: relative;
-            z-index: 1;
-            height: calc(100vh - 120px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        h1 {
+        .main-heading {
             font-family: 'Press Start 2P', cursive;
-            font-size: 2.5em;
+            font-size: 3em;
             color: var(--primary-accent);
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             text-shadow: 2px 2px 5px rgba(0, 188, 212, 0.3);
         }
 
-        h2 {
+        .sub-heading {
             font-family: 'Press Start 2P', cursive;
-            font-size: 1.5em;
+            font-size: 2em;
             color: var(--secondary-accent);
             text-transform: uppercase;
-            margin-top: 5px;
-            margin-bottom: 30px;
+            margin-top: 0;
+            margin-bottom: 40px;
             letter-spacing: 1px;
             text-shadow: 1px 1px 3px rgba(255, 235, 59, 0.3);
         }
 
-        .draw-content-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 40px;
-            width: 100%;
-            flex-grow: 1;
         }
 
-        .spin-wheel-section {
+        .category-card {
+            background-color: #2a2a47;
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            width: 600px;
-            flex-shrink: 0;
         }
 
-        .wheel-container {
-            width: 550px;
-            height: 550px;
-            position: relative;
-            margin-bottom: 40px;
-            box-shadow: var(--card-shadow);
-            border-radius: 50%;
-            background-color: #333;
-            border: 5px solid var(--secondary-accent);
-            overflow: hidden;
-        }
-
-        .wheel-canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-            transform: rotate(0deg);
-            transition: transform 1.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-        }
-
-        .spin-button {
-            font-family: 'Press Start 2P', cursive;
-            background-color: var(--primary-accent);
-            color: var(--dark-bg-color);
-            border: none;
-            padding: 20px 40px;
-            font-size: 1.2em;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-            border: 3px solid #fff;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .spin-button:disabled {
-            background-color: #555;
-            color: #ccc;
-            cursor: not-allowed;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .spin-button:hover:not(:disabled) {
-            transform: translate(-50%, -50%) scale(1.08);
-            background-color: #00a4bd;
-            box-shadow: var(--button-hover-shadow);
-        }
-
-        .pointer {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 30px solid transparent;
-            border-right: 30px solid transparent;
-            border-bottom: 50px solid var(--secondary-accent);
-            z-index: 5;
-            filter: drop-shadow(0 6px 10px rgba(255,235,59,0.4));
-        }
-
-        .results-section {
-            flex-grow: 1;
-            padding: 30px;
-            border-left: 1px dashed var(--border-color);
-            text-align: center;
-            height: 100%;
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
-
-        .results-section h3 {
+        .category-title {
             font-family: 'Press Start 2P', cursive;
             font-size: 1.8em;
             color: var(--primary-accent);
-            margin-bottom: 25px;
-            text-shadow: 1px 1px 3px rgba(0, 188, 212, 0.2);
             text-align: center;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
         }
 
-        .groups-container {
+        .group-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            flex-grow: 1;
         }
 
         .group-card {
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: var(--card-shadow);
-            text-align: left;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            color: var(--text-light);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: linear-gradient(145deg, var(--dark-card-bg), #2a2a47);
+            background: linear-gradient(145deg, #1f1f33, #151528);
         }
-
-        .group-card::before {
-            content: '';
-            position: absolute;
-            top: -20%;
-            left: -20%;
-            width: 140%;
-            height: 140%;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%);
-            transform: rotate(20deg);
-            z-index: 0;
-        }
-
+        
+        .group-card.group-A { background-color: var(--group-a-bg); }
+        .group-card.group-B { background-color: var(--group-b-bg); }
+        .group-card.group-C { background-color: var(--group-c-bg); }
+        .group-card.group-D { background-color: var(--group-d-bg); }
+        
         .group-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
         }
 
-        .group-card h3 {
+        .group-card h4 {
             font-family: 'Chakra Petch', sans-serif;
-            margin-top: 0;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.4);
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            font-size: 1.6em;
-            text-align: center;
+            font-size: 1.4em;
+            font-weight: 700;
             color: #fff;
-            position: relative;
-            z-index: 1;
+            margin: 0 0 10px 0;
+            text-align: center;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 5px;
         }
 
         .group-card ul {
             list-style-type: none;
             padding: 0;
             margin: 0;
-            position: relative;
-            z-index: 1;
         }
 
         .group-card li {
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            font-size: 1em;
-            color: var(--text-light);
-        }
-        .group-card li:last-child { border-bottom: none; }
-        .participant-name { font-weight: 600; margin-bottom: 2px; color: var(--secondary-accent); text-shadow: 0 0 5px rgba(255, 235, 59, 0.2); }
-        .participant-department { font-size: 0.9em; font-style: italic; opacity: 0.8; color: #ccc; }
-
-        .final-results-dashboard-container {
-            display: none;
-            width: 100%;
-            max-width: 1920px;
-            height: calc(100vh - 120px);
-            margin: 0 auto;
-            text-align: left;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: var(--card-shadow);
-            background-color: var(--dark-card-bg);
-            border: 2px solid var(--primary-accent);
-            box-sizing: border-box;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .final-results-dashboard-container h2 {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1.8em;
-            color: var(--secondary-accent);
-            margin-bottom: 20px;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-        
-        .final-group-category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .final-group-category {
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 20px;
-            border-radius: 15px;
-            background: linear-gradient(145deg, #1f1f33, #151528);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .final-group-category-title {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1.5em;
-            color: var(--primary-accent);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .final-group-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .final-group-card {
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-            background: #2a2a47;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .final-group-card.group-A { background-color: var(--group-a-bg); }
-        .final-group-card.group-B { background-color: var(--group-b-bg); }
-        .final-group-card.group-C { background-color: var(--group-c-bg); }
-        .final-group-card.group-D { background-color: var(--group-d-bg); }
-        .final-group-card.group-E { background-color: var(--group-e-bg); }
-
-        .final-group-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        .final-group-card h4 {
-            font-family: 'Chakra Petch', sans-serif;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #fff;
-            margin: 0 0 10px 0;
-            text-align: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .final-group-card ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .final-group-card li {
-            padding: 5px 0;
+            padding: 8px 0;
             border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-            font-size: 1em;
+            font-size: 1.1em;
             color: #fff;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
-        .final-group-card li:last-child { border-bottom: none; }
+        .group-card li:last-child { border-bottom: none; }
 
-        .empty-draw-placeholder {
-            text-align: center;
-            font-style: italic;
-            opacity: 0.8;
-            margin-top: 10px;
-            color: #ccc;
-            width: 100%;
-        }
-
-        @media (max-width: 1400px) {
-            .draw-content-wrapper {
-                flex-direction: column;
-                align-items: center;
-            }
-            .results-section {
-                border-left: none;
-                border-top: 1px dashed var(--border-color);
-                padding-left: 0;
-                padding-top: 30px;
-                width: 100%;
-            }
+        @media (max-width: 1200px) {
+            .main-heading { font-size: 2em; }
+            .sub-heading { font-size: 1.5em; }
+            .category-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+            .category-card { padding: 20px; }
+            .category-title { font-size: 1.5em; }
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 1.5em; letter-spacing: 2px; }
-            h2 { font-size: 1em; margin-bottom: 20px; }
-            .navbar a { font-size: 0.8em; padding: 10px 15px; }
-            .container { padding: 20px; }
-            .wheel-container { width: 300px; height: 300px; }
-            .spin-button { padding: 15px 30px; font-size: 1em; }
-            .pointer { border-left: 20px solid transparent; border-right: 20px solid transparent; border-bottom: 30px solid var(--secondary-accent); top: -10px; }
-            .groups-container { grid-template-columns: 1fr; }
-            .group-card { padding: 15px; }
-            .group-card h3 { font-size: 1.4em; }
-            .group-card li { font-size: 0.9em; }
+            body { padding: 15px; }
+            .dashboard-container { padding: 20px; }
+            .main-heading { font-size: 1.5em; }
+            .sub-heading { font-size: 1.2em; margin-bottom: 20px; }
+            .category-grid { grid-template-columns: 1fr; gap: 30px; }
+            .group-grid { grid-template-columns: 1fr; }
+            .category-card { padding: 15px; }
+            .category-title { font-size: 1.2em; }
+            .group-card h4 { font-size: 1.2em; }
+            .group-card li { font-size: 1em; }
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <a id="male-link" class="male-link active">Male Singles</a>
-        <a id="female-link" class="female-link">Female Singles</a>
-        <a id="doubles-link" class="doubles-link">Male Doubles</a>
-        <a id="female-doubles-link" class="female-doubles-link">Female Doubles</a>
-        <a id="mixed-doubles-link" class="mixed-doubles-link">Mixed Doubles</a>
-        <a id="final-results-link" class="final-results-link disabled">Final Results</a>
-    </div>
 
-    <div id="main-content">
-        <div class="container" id="male-draw-container">
-            <h1>Clinix Cup 2025</h1>
-            <h2>Male Singles Grouping Draw</h2>
-            <div id="male-draw-process" class="draw-content-wrapper">
-                <div class="spin-wheel-section">
-                    <div class="wheel-container">
-                        <div class="pointer"></div>
-                        <canvas id="male-wheel-canvas" class="wheel-canvas" width="700" height="700"></canvas>
-                        <button id="male-spin-button" class="spin-button">Spin to Draw</button>
-                    </div>
-                </div>
-                <div class="results-section">
-                    <h3>Draw Results</h3>
-                    <div class="groups-container">
-                        <div id="male-group-a" class="group-card">
-                            <h3>Group A (3 Participants)</h3>
-                            <ul id="male-group-a-list"></ul>
-                        </div>
-                        <div id="male-group-b" class="group-card">
-                            <h3>Group B (3 Participants)</h3>
-                            <ul id="male-group-b-list"></ul>
-                        </div>
-                        <div id="male-group-c" class="group-card">
-                            <h3>Group C (3 Participants)</h3>
-                            <ul id="male-group-c-list"></ul>
-                        </div>
-                        <div id="male-group-d" class="group-card">
-                            <h3>Group D (4 Participants)</h3>
-                            <ul id="male-group-d-list"></ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="dashboard-container">
+        <h1 class="main-heading">Clinix Cup 2025</h1>
+        <h2 class="sub-heading">Tournament Grouping Dashboard</h2>
 
-        <div class="container" id="female-draw-container" style="display: none;">
-            <h1>Clinix Cup 2025</h1>
-            <h2>Female Singles Grouping Draw</h2>
-            <div id="female-draw-process" class="draw-content-wrapper">
-                <div class="spin-wheel-section">
-                    <div class="wheel-container">
-                        <div class="pointer"></div>
-                        <canvas id="female-wheel-canvas" class="wheel-canvas" width="700" height="700"></canvas>
-                        <button id="female-spin-button" class="spin-button">Spin to Draw</button>
-                    </div>
-                </div>
-                <div class="results-section">
-                    <h3>Draw Results</h3>
-                    <div class="groups-container">
-                        <div id="female-group-a" class="group-card">
-                            <h3>Group A (3 Participants)</h3>
-                            <ul id="female-group-a-list"></ul>
-                        </div>
-                        <div id="female-group-b" class="group-card">
-                            <h3>Group B (3 Participants)</h3>
-                            <ul id="female-group-b-list"></ul>
-                        </div>
-                        <div id="female-group-c" class="group-card">
-                            <h3>Group C (4 Participants)</h3>
-                            <ul id="female-group-c-list"></ul>
-                        </div>
-                        <div id="female-group-d" class="group-card">
-                            <h3>Group D (4 Participants)</h3>
-                            <ul id="female-group-d-list"></ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="container" id="doubles-draw-container" style="display: none;">
-            <h1>Clinix Cup 2025</h1>
-            <h2>Male Doubles Grouping Draw</h2>
-            <div id="doubles-draw-process" class="draw-content-wrapper">
-                <div class="spin-wheel-section">
-                    <div class="wheel-container">
-                        <div class="pointer"></div>
-                        <canvas id="doubles-wheel-canvas" class="wheel-canvas" width="700" height="700"></canvas>
-                        <button id="doubles-spin-button" class="spin-button">Spin to Draw</button>
-                    </div>
-                </div>
-                <div class="results-section">
-                    <h3>Draw Results</h3>
-                    <div class="groups-container">
-                        <div id="doubles-group-a" class="group-card">
-                            <h3>Group A (3 Teams)</h3>
-                            <ul id="doubles-group-a-list"></ul>
-                        </div>
-                        <div id="doubles-group-b" class="group-card">
-                            <h3>Group B (3 Teams)</h3>
-                            <ul id="doubles-group-b-list"></ul>
-                        </div>
-                        <div id="doubles-group-c" class="group-card">
-                            <h3>Group C (3 Teams)</h3>
-                            <ul id="doubles-group-c-list"></ul>
-                        </div>
-                        <div id="doubles-group-d" class="group-card">
-                            <h3>Group D (4 Teams)</h3>
-                            <ul id="doubles-group-d-list"></ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="category-grid">
 
-        <div class="container" id="female-doubles-draw-container" style="display: none;">
-            <h1>Clinix Cup 2025</h1>
-            <h2>Female Doubles Grouping Draw</h2>
-            <div id="female-doubles-draw-process" class="draw-content-wrapper">
-                <div class="spin-wheel-section">
-                    <div class="wheel-container">
-                        <div class="pointer"></div>
-                        <canvas id="female-doubles-wheel-canvas" class="wheel-canvas" width="700" height="700"></canvas>
-                        <button id="female-doubles-spin-button" class="spin-button">Spin to Draw</button>
+            <div class="category-card">
+                <div class="category-title">Male Singles</div>
+                <div class="group-grid">
+                    <div class="group-card group-A">
+                        <h4>Group A</h4>
+                        <ul>
+                            <li>Haizul Iskandar</li>
+                            <li>Dr Nazrin</li>
+                            <li>Dr Mohd Nizam</li>
+                        </ul>
                     </div>
-                </div>
-                <div class="results-section">
-                    <h3>Draw Results</h3>
-                    <div class="groups-container">
-                        <div id="female-doubles-group-a" class="group-card">
-                            <h3>Group A (2 Teams)</h3>
-                            <ul id="female-doubles-group-a-list"></ul>
-                        </div>
-                        <div id="female-doubles-group-b" class="group-card">
-                            <h3>Group B (3 Teams)</h3>
-                            <ul id="female-doubles-group-b-list"></ul>
-                        </div>
-                        <div id="female-doubles-group-c" class="group-card">
-                            <h3>Group C (3 Teams)</h3>
-                            <ul id="female-doubles-group-c-list"></ul>
-                        </div>
-                        <div id="female-doubles-group-d" class="group-card">
-                            <h3>Group D (3 Teams)</h3>
-                            <ul id="female-doubles-group-d-list"></ul>
-                        </div>
+                    <div class="group-card group-B">
+                        <h4>Group B</h4>
+                        <ul>
+                            <li>Muhd Nasamudin</li>
+                            <li>Muhd Danial Z</li>
+                            <li>Muhd Arif Nasri</li>
+                            <li>Dr Ow Ji Ken</li>
+                        </ul>
                     </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="container" id="mixed-doubles-draw-container" style="display: none;">
-            <h1>Clinix Cup 2025</h1>
-            <h2>Mixed Doubles Grouping Draw</h2>
-            <div id="mixed-doubles-draw-process" class="draw-content-wrapper">
-                <div class="spin-wheel-section">
-                    <div class="wheel-container">
-                        <div class="pointer"></div>
-                        <canvas id="mixed-doubles-wheel-canvas" class="wheel-canvas" width="700" height="700"></canvas>
-                        <button id="mixed-doubles-spin-button" class="spin-button">Spin to Draw</button>
+                    <div class="group-card group-C">
+                        <h4>Group C</h4>
+                        <ul>
+                            <li>Zahid</li>
+                            <li>Dr Mohd Asri</li>
+                            <li>Faiz Mashood</li>
+                        </ul>
                     </div>
-                </div>
-                <div class="results-section">
-                    <h3>Draw Results</h3>
-                    <div class="groups-container">
-                        <div id="mixed-doubles-group-a" class="group-card">
-                            <h3>Group A (3 Teams)</h3>
-                            <ul id="mixed-doubles-group-a-list"></ul>
-                        </div>
-                        <div id="mixed-doubles-group-b" class="group-card">
-                            <h3>Group B (3 Teams)</h3>
-                            <ul id="mixed-doubles-group-b-list"></ul>
-                        </div>
-                        <div id="mixed-doubles-group-c" class="group-card">
-                            <h3>Group C (3 Teams)</h3>
-                            <ul id="mixed-doubles-group-c-list"></ul>
-                        </div>
-                        <div id="mixed-doubles-group-d" class="group-card">
-                            <h3>Group D (4 Teams)</h3>
-                            <ul id="mixed-doubles-group-d-list"></ul>
-                        </div>
+                    <div class="group-card group-D">
+                        <h4>Group D</h4>
+                        <ul>
+                            <li>Amir Hakim</li>
+                            <li>Dr Eizuddin</li>
+                            <li>Koh Hui Beng</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="final-results-dashboard-container" id="final-results-dashboard-container" style="display: none;">
-            <h2>Tournament Grouping Dashboard</h2>
-            <div class="final-group-category-grid">
-                <div id="male-singles-dashboard" class="final-group-category">
-                    <div class="final-group-category-title">Male Singles</div>
-                    <div id="male-singles-dashboard-content" class="final-group-grid">
-                        <p class="empty-draw-placeholder">Draw not yet completed.</p>
+            <div class="category-card">
+                <div class="category-title">Female Singles</div>
+                <div class="group-grid">
+                    <div class="group-card group-A">
+                        <h4>Group A</h4>
+                        <ul>
+                            <li>Dr Kogilavani</li>
+                            <li>Nor Atika</li>
+                            <li>Dr Fuziana</li>
+                        </ul>
                     </div>
-                </div>
-                <div id="female-singles-dashboard" class="final-group-category">
-                    <div class="final-group-category-title">Female Singles</div>
-                    <div id="female-singles-dashboard-content" class="final-group-grid">
-                        <p class="empty-draw-placeholder">Draw not yet completed.</p>
+                    <div class="group-card group-B">
+                        <h4>Group B</h4>
+                        <ul>
+                            <li>Nawa</li>
+                            <li>Nabila</li>
+                            <li>Wani Irdina</li>
+                        </ul>
                     </div>
-                </div>
-                <div id="male-doubles-dashboard" class="final-group-category">
-                    <div class="final-group-category-title">Male Doubles</div>
-                    <div id="male-doubles-dashboard-content" class="final-group-grid">
-                        <p class="empty-draw-placeholder">Draw not yet completed.</p>
+                    <div class="group-card group-C">
+                        <h4>Group C</h4>
+                        <ul>
+                            <li>Siti Khadijah</li>
+                            <li>Siti Norfazidah</li>
+                            <li>Hamzi</li>
+                        </ul>
                     </div>
-                </div>
-                <div id="female-doubles-dashboard" class="final-group-category">
-                    <div class="final-group-category-title">Female Doubles</div>
-                    <div id="female-doubles-dashboard-content" class="final-group-grid">
-                        <p class="empty-draw-placeholder">Draw not yet completed.</p>
-                    </div>
-                </div>
-                <div id="mixed-doubles-dashboard" class="final-group-category">
-                    <div class="final-group-category-title">Mixed Doubles</div>
-                    <div id="mixed-doubles-dashboard-content" class="final-group-grid">
-                        <p class="empty-draw-placeholder">Draw not yet completed.</p>
+                    <div class="group-card group-D">
+                        <h4>Group D</h4>
+                        <ul>
+                            <li>Jassie Teo</li>
+                            <li>Aimie</li>
+                            <li>Rohaida Abdullah</li>
+                        </ul>
                     </div>
                 </div>
             </div>
+
+            <div class="category-card">
+                <div class="category-title">Male Doubles</div>
+                <div class="group-grid">
+                    <div class="group-card group-A">
+                        <h4>Group A</h4>
+                        <ul>
+                            <li>HEARTSTOPPER1</li>
+                            <li>NURSING PULSE POWER 3</li>
+                            <li>CARDIOLOGY TITANS 1</li>
+                            <li>ED PCHC FIGHTERS 1</li>
+                        </ul>
+                    </div>
+                    <div class="group-card group-B">
+                        <h4>Group B</h4>
+                        <ul>
+                            <li>NURSING PULSE POWER 2</li>
+                            <li>ED PCHC FIGHTERS 2</li>
+                            <li>CARDIOLOGY TITANS 2</li>
+                            <li>CAP 2</li>
+                        </ul>
+                    </div>
+                    <div class="group-card group-C">
+                        <h4>Group C</h4>
+                        <ul>
+                            <li>CARDIOLOGY TITANS 3</li>
+                            <li>NURSING PULSE POWER 1</li>
+                            <li>CAP 3</li>
+                        </ul>
+                    </div>
+                    <div class="group-card group-D">
+                        <h4>Group D</h4>
+                        <ul>
+                            <li>HEARTSTOPPER 2</li>
+                            <li>ED PCHC FIGHTER 3</li>
+                            <li>CAP 1</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="category-card">
+                <div class="category-title">Female Doubles</div>
+                <div class="group-grid">
+                    <div class="group-card group-A">
+                        <h4>Group A</h4>
+                        <ul>
+                            <li>CAP 2</li>
+                            <li>ED PCHC FIGHTERS 1</li>
+                            <li>HEARTSTOPPER 3</li>
+                            <li>NURSING PULSE POWER 2</li>
+                        </ul>
+                    </div>
+                    <div class="group-card group-B">
+                        <h4>Group B</h4>
+                        <ul>
+                            <li>NURSING PULSE POWER 1</li>
+                            <li>ED PCHC FIGHTER 2</li>
+                            <li>CARDIOLOGY TITANS 1</li>
+                            <li>CAP 1</li>
+                        </ul>
+                    </div>
+                    <div class="group-card group-C">
+                        <h4>Group C</h4>
+                        <ul>
+                            <li>NURSING PULSE POWER 3</li>
+                            <li>HEARTSTOPPER 1</li>
+                            <li>CAP 3</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-card">
+                <div class="category-title">Mixed Doubles</div>
+                <div class="group-grid">
+                    <div class="group-card group-A">
+                        <h4>Group A</h4>
+                        <ul>
+                            <li>CAP 1</li>
+                            <li>CARDIOLOGY TITANS 3</li>
+                            <li>ED PCHC FIGHTER 1</li>
+                        </ul>
+                    </div>
+                    <div class="group-card group-B">
+                        <h4>Group B</h4>
+                        <ul>
+                            <li>NURSING PULSE POWER 1</li>
+                            <li>HEARTSTOPPER 2</li>
+                            <li>CAP 2</li>
+                        </ul>
+                    </div>
+                    <div class="group-card group-C">
+                        <h4>Group C</h4>
+                        <ul>
+                            <li>NURSING PULSE POWER 3</li>
+                            <li>HEARTSTOPPER 1</li>
+                            <li>CARDIOLOGY TITANS 2</li>
+                        </ul>
+                    </div>
+                    <div class="group-card group-D">
+                        <h4>Group D</h4>
+                        <ul>
+                            <li>CAP 3</li>
+                            <li>NURSING PULSE POWER 2</li>
+                            <li>ED PCHC FIGHTER 2</li>
+                            <li>CARDIOLOGY TITANS 1</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <script>
-        const departmentColors = {
-            'CARDIOLOGY': '#f44336',
-            'NURSING': '#2196f3',
-            'ANAESTHESIA & INT. CARE': '#9c27b0',
-            'ED & PCHC': '#009688',
-            'CARDIOTHORACIC': '#ffc107'
-        };
-
-        const cssRoot = getComputedStyle(document.documentElement);
-        const darkCardBg = cssRoot.getPropertyValue('--dark-card-bg').trim();
-        const secondaryAccent = cssRoot.getPropertyValue('--secondary-accent').trim();
-
-        const finalResults = {};
-        const drawStatus = {
-            male: false,
-            female: false,
-            doubles: false,
-            femaleDoubles: false,
-            mixedDoubles: false
-        };
-
-        function truncateText(text, maxWidth, font, canvasContext) {
-            canvasContext.font = font;
-            let width = canvasContext.measureText(text).width;
-            if (width <= maxWidth) {
-                return text;
-            }
-            let ellipsis = '...';
-            let ellipsisWidth = canvasContext.measureText(ellipsis).width;
-            let tempText = text;
-            while (width >= maxWidth - ellipsisWidth && tempText.length > 0) {
-                tempText = tempText.substring(0, tempText.length - 1);
-                width = canvasContext.measureText(tempText).width;
-            }
-            return tempText + ellipsis;
-        }
-
-        function shuffle(array) {
-            let shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        }
-
-        const finalResultsLink = document.getElementById('final-results-link');
-        const finalResultsDashboardContainer = document.getElementById('final-results-dashboard-container');
-
-        function updateFinalDashboard() {
-            if (drawStatus.male) {
-                const contentDiv = document.getElementById('male-singles-dashboard-content');
-                contentDiv.innerHTML = '';
-                const groups = { 'Group A': finalResults.male.a, 'Group B': finalResults.male.b, 'Group C': finalResults.male.c, 'Group D': finalResults.male.d };
-                for (const [groupName, participants] of Object.entries(groups)) {
-                    const groupCard = document.createElement('div');
-                    groupCard.className = `final-group-card group-${groupName.slice(-1)}`;
-                    let html = `<h4>${groupName}</h4><ul>`;
-                    participants.forEach(p => {
-                        html += `<li>${p.name}</li>`;
-                    });
-                    html += '</ul>';
-                    groupCard.innerHTML = html;
-                    contentDiv.appendChild(groupCard);
-                }
-            }
-            if (drawStatus.female) {
-                const contentDiv = document.getElementById('female-singles-dashboard-content');
-                contentDiv.innerHTML = '';
-                const groups = { 'Group A': finalResults.female.a, 'Group B': finalResults.female.b, 'Group C': finalResults.female.c, 'Group D': finalResults.female.d };
-                for (const [groupName, participants] of Object.entries(groups)) {
-                    const groupCard = document.createElement('div');
-                    groupCard.className = `final-group-card group-${groupName.slice(-1)}`;
-                    let html = `<h4>${groupName}</h4><ul>`;
-                    participants.forEach(p => {
-                        html += `<li>${p.name}</li>`;
-                    });
-                    html += '</ul>';
-                    groupCard.innerHTML = html;
-                    contentDiv.appendChild(groupCard);
-                }
-            }
-            if (drawStatus.doubles) {
-                const contentDiv = document.getElementById('male-doubles-dashboard-content');
-                contentDiv.innerHTML = '';
-                const groups = { 'Group A': finalResults.doubles.a, 'Group B': finalResults.doubles.b, 'Group C': finalResults.doubles.c, 'Group D': finalResults.doubles.d };
-                for (const [groupName, participants] of Object.entries(groups)) {
-                    const groupCard = document.createElement('div');
-                    groupCard.className = `final-group-card group-${groupName.slice(-1)}`;
-                    let html = `<h4>${groupName}</h4><ul>`;
-                    participants.forEach(p => {
-                        html += `<li>${p.name}</li>`;
-                    });
-                    html += '</ul>';
-                    groupCard.innerHTML = html;
-                    contentDiv.appendChild(groupCard);
-                }
-            }
-            if (drawStatus.femaleDoubles) {
-                const contentDiv = document.getElementById('female-doubles-dashboard-content');
-                contentDiv.innerHTML = '';
-                const groups = { 'Group A': finalResults.femaleDoubles.a, 'Group B': finalResults.femaleDoubles.b, 'Group C': finalResults.femaleDoubles.c, 'Group D': finalResults.femaleDoubles.d };
-                for (const [groupName, participants] of Object.entries(groups)) {
-                    const groupCard = document.createElement('div');
-                    groupCard.className = `final-group-card group-${groupName.slice(-1)}`;
-                    let html = `<h4>${groupName}</h4><ul>`;
-                    participants.forEach(p => {
-                        html += `<li>${p.name}</li>`;
-                    });
-                    html += '</ul>';
-                    groupCard.innerHTML = html;
-                    contentDiv.appendChild(groupCard);
-                }
-            }
-            if (drawStatus.mixedDoubles) {
-                const contentDiv = document.getElementById('mixed-doubles-dashboard-content');
-                contentDiv.innerHTML = '';
-                const groups = { 'Group A': finalResults.mixedDoubles.a, 'Group B': finalResults.mixedDoubles.b, 'Group C': finalResults.mixedDoubles.c, 'Group D': finalResults.mixedDoubles.d };
-                for (const [groupName, participants] of Object.entries(groups)) {
-                    const groupCard = document.createElement('div');
-                    groupCard.className = `final-group-card group-${groupName.slice(-1)}`;
-                    let html = `<h4>${groupName}</h4><ul>`;
-                    participants.forEach(p => {
-                        html += `<li>${p.name}</li>`;
-                    });
-                    html += '</ul>';
-                    groupCard.innerHTML = html;
-                    contentDiv.appendChild(groupCard);
-                }
-            }
-        }
-
-        // --- Male Singles Draw Logic ---
-        const maleParticipants = [
-            { name: 'Koh Hui Beng', department: 'CARDIOLOGY' }, { name: 'Ow Ji Ken', department: 'CARDIOLOGY' },
-            { name: 'Faiz Mashood', department: 'CARDIOLOGY' }, { name: 'Haizul Iskandar Sapawi', department: 'NURSING' },
-            { name: 'Muhammad Danial Zulkepli', department: 'NURSING' }, { name: 'Muhammad Nasarudin', department: 'NURSING' },
-            { name: 'Mohd Amir Hakim', department: 'ANAESTHESIA & INT. CARE' }, { name: 'Dr Eizzuddin', department: 'ANAESTHESIA & INT. CARE' },
-            { name: 'Mohd Ariff Nasri', department: 'ED & PCHC' }, { name: 'Dr Mohd Nizam Mahmud', department: 'ED & PCHC' },
-            { name: 'Zahid', department: 'CARDIOTHORACIC' }, { name: 'Dr Nazrin', department: 'CARDIOTHORACIC' },
-            { name: 'Dr Mohd Azri', department: 'CARDIOTHORACIC' }
-        ];
-        let maleAvailableParticipants = shuffle(maleParticipants);
-        let maleGroupA = []; let maleGroupB = []; let maleGroupC = []; let maleGroupD = [];
-        let maleCurrentRotation = 0;
-        const maleWheelCanvas = document.getElementById('male-wheel-canvas');
-        const maleCtx = maleWheelCanvas.getContext('2d');
-        const maleSpinButton = document.getElementById('male-spin-button');
-        const maleGroupAList = document.getElementById('male-group-a-list');
-        const maleGroupBList = document.getElementById('male-group-b-list');
-        const maleGroupCList = document.getElementById('male-group-c-list');
-        const maleGroupDList = document.getElementById('male-group-d-list');
-
-        function maleDrawWheel() {
-            if (maleAvailableParticipants.length === 0) { maleCtx.clearRect(0, 0, maleWheelCanvas.width, maleWheelCanvas.height); return; }
-            const centerX = maleWheelCanvas.width / 2; const centerY = maleWheelCanvas.height / 2;
-            const radius = Math.min(centerX, centerY) - 20; const arcSize = (360 / maleAvailableParticipants.length);
-            maleCtx.clearRect(0, 0, maleWheelCanvas.width, maleWheelCanvas.height);
-            maleCtx.strokeStyle = '#fff'; maleCtx.lineWidth = 3;
-            maleAvailableParticipants.forEach((p, i) => {
-                const angleStart = (i * arcSize) * (Math.PI / 180);
-                const angleEnd = ((i + 1) * arcSize) * (Math.PI / 180);
-                const color = departmentColors[p.department] || '#ccc';
-                maleCtx.beginPath(); maleCtx.moveTo(centerX, centerY);
-                maleCtx.arc(centerX, centerY, radius, angleStart, angleEnd);
-                maleCtx.closePath(); maleCtx.fillStyle = color; maleCtx.fill(); maleCtx.stroke();
-                maleCtx.save(); maleCtx.translate(centerX, centerY); maleCtx.rotate((angleStart + angleEnd) / 2);
-                maleCtx.fillStyle = '#fff'; maleCtx.font = 'bold 20px "Chakra Petch", sans-serif';
-                maleCtx.textAlign = 'right'; maleCtx.textBaseline = 'middle';
-                const textMargin = 30; const maxTextWidth = radius - textMargin - 10;
-                const displayedName = truncateText(p.name, maxTextWidth, maleCtx.font, maleCtx);
-                maleCtx.fillText(displayedName, radius - textMargin, 0); maleCtx.restore();
-            });
-            maleCtx.beginPath(); maleCtx.arc(centerX, centerY, 80, 0, 2 * Math.PI);
-            maleCtx.fillStyle = darkCardBg; maleCtx.fill();
-            maleCtx.strokeStyle = secondaryAccent; maleCtx.lineWidth = 5; maleCtx.stroke();
-        }
-        function maleSpinWheel() {
-            if (maleAvailableParticipants.length === 0) return;
-            maleSpinButton.disabled = true; maleSpinButton.innerText = 'Spinning...';
-            const randomIndex = Math.floor(Math.random() * maleAvailableParticipants.length);
-            const degreesPerSegment = 360 / maleAvailableParticipants.length;
-            const targetSegmentStartAngle = randomIndex * degreesPerSegment;
-            const targetRotation = (360 * 5) + (270 - targetSegmentStartAngle) - (degreesPerSegment / 2);
-            maleWheelCanvas.style.transition = 'transform 1.5s cubic-bezier(0.25, 0.1, 0.25, 1)';
-            maleWheelCanvas.style.transform = `rotate(${targetRotation}deg)`;
-            setTimeout(() => {
-                maleCurrentRotation = targetRotation % 360; maleWheelCanvas.style.transition = 'none';
-                maleWheelCanvas.style.transform = `rotate(${maleCurrentRotation}deg)`;
-                const drawnParticipant = maleAvailableParticipants.splice(randomIndex, 1)[0];
-                maleAddToGroup(drawnParticipant); maleDrawWheel();
-                if (maleAvailableParticipants.length > 0) { maleSpinButton.disabled = false; maleSpinButton.innerText = 'Spin to Draw'; }
-                else { maleDisplayFinalResults(); }
-            }, 1500);
-        }
-        function maleAddToGroup(participant) {
-            let targetGroup;
-            if (maleGroupA.length < 3) { maleGroupA.push(participant); targetGroup = maleGroupAList; }
-            else if (maleGroupB.length < 3) { maleGroupB.push(participant); targetGroup = maleGroupBList; }
-            else if (maleGroupC.length < 3) { maleGroupC.push(participant); targetGroup = maleGroupCList; }
-            else { maleGroupD.push(participant); targetGroup = maleGroupDList; }
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `<span class="participant-name">${participant.name}</span> <span class="participant-department">(${participant.department})</span>`;
-            targetGroup.appendChild(listItem);
-        }
-        function maleDisplayFinalResults() {
-            finalResults.male = { a: maleGroupA, b: maleGroupB, c: maleGroupC, d: maleGroupD };
-            drawStatus.male = true;
-            finalResultsLink.classList.remove('disabled');
-            alert('Male Singles Draw Complete! Results are available in the Final Results tab.');
-        }
-        maleSpinButton.addEventListener('click', maleSpinWheel);
-
-        // --- Female Singles Draw Logic ---
-        const femaleParticipants = [
-            { name: 'Nabila', department: 'CARDIOLOGY' }, { name: 'Fuziana', department: 'CARDIOLOGY' },
-            { name: 'Nik Hasnita', department: 'CARDIOLOGY' }, { name: 'Navanita', department: 'CARDIOLOGY' },
-            { name: 'Jassie Teo', department: 'CARDIOLOGY' }, { name: 'Nor Atika', department: 'NURSING' },
-            { name: 'Wani Irdina', department: 'NURSING' }, { name: 'Nawwar Nazihah Ikramah', department: 'NURSING' },
-            { name: 'Dr Kogilavani', department: 'ANAESTHESIA & INT. CARE' }, { name: 'Siti Khadijah', department: 'ANAESTHESIA & INT. CARE' },
-            { name: 'Siti Norfazidah', department: 'ANAESTHESIA & INT. CARE' }, { name: 'Ruhaida Abdullah', department: 'ED & PCHC' },
-            { name: 'SA Hamzi', department: 'CARDIOTHORACIC' }, { name: 'Aimie', department: 'CARDIOTHORACIC' }
-        ];
-        let femaleAvailableParticipants = shuffle(femaleParticipants);
-        let femaleGroupA = []; let femaleGroupB = []; let femaleGroupC = []; let femaleGroupD = [];
-        let femaleCurrentRotation = 0;
-        const femaleWheelCanvas = document.getElementById('female-wheel-canvas');
-        const femaleCtx = femaleWheelCanvas.getContext('2d');
-        const femaleSpinButton = document.getElementById('female-spin-button');
-        const femaleGroupAList = document.getElementById('female-group-a-list');
-        const femaleGroupBList = document.getElementById('female-group-b-list');
-        const femaleGroupCList = document.getElementById('female-group-c-list');
-        const femaleGroupDList = document.getElementById('female-group-d-list');
-        
-        function femaleDrawWheel() {
-            if (femaleAvailableParticipants.length === 0) { femaleCtx.clearRect(0, 0, femaleWheelCanvas.width, femaleWheelCanvas.height); return; }
-            const centerX = femaleWheelCanvas.width / 2; const centerY = femaleWheelCanvas.height / 2;
-            const radius = Math.min(centerX, centerY) - 20; const arcSize = (360 / femaleAvailableParticipants.length);
-            femaleCtx.clearRect(0, 0, femaleWheelCanvas.width, femaleWheelCanvas.height);
-            femaleCtx.strokeStyle = '#fff'; femaleCtx.lineWidth = 3;
-            femaleAvailableParticipants.forEach((p, i) => {
-                const angleStart = (i * arcSize) * (Math.PI / 180);
-                const angleEnd = ((i + 1) * arcSize) * (Math.PI / 180);
-                const color = departmentColors[p.department] || '#ccc';
-                femaleCtx.beginPath(); femaleCtx.moveTo(centerX, centerY);
-                femaleCtx.arc(centerX, centerY, radius, angleStart, angleEnd);
-                femaleCtx.closePath(); femaleCtx.fillStyle = color; femaleCtx.fill(); femaleCtx.stroke();
-                femaleCtx.save(); femaleCtx.translate(centerX, centerY); femaleCtx.rotate((angleStart + angleEnd) / 2);
-                femaleCtx.fillStyle = '#fff'; femaleCtx.font = 'bold 20px "Chakra Petch", sans-serif';
-                femaleCtx.textAlign = 'right'; femaleCtx.textBaseline = 'middle';
-                const textMargin = 30; const maxTextWidth = radius - textMargin - 10;
-                const displayedName = truncateText(p.name, maxTextWidth, femaleCtx.font, femaleCtx);
-                femaleCtx.fillText(displayedName, radius - textMargin, 0); femaleCtx.restore();
-            });
-            femaleCtx.beginPath(); femaleCtx.arc(centerX, centerY, 80, 0, 2 * Math.PI);
-            femaleCtx.fillStyle = darkCardBg; femaleCtx.fill();
-            femaleCtx.strokeStyle = secondaryAccent; femaleCtx.lineWidth = 5; femaleCtx.stroke();
-        }
-        function femaleSpinWheel() {
-            if (femaleAvailableParticipants.length === 0) { femaleDisplayFinalResults(); return; }
-            femaleSpinButton.disabled = true; femaleSpinButton.innerText = 'Spinning...';
-            const randomIndex = Math.floor(Math.random() * femaleAvailableParticipants.length);
-            const degreesPerSegment = 360 / femaleAvailableParticipants.length;
-            const targetSegmentStartAngle = randomIndex * degreesPerSegment;
-            const targetRotation = (360 * 5) + (270 - targetSegmentStartAngle) - (degreesPerSegment / 2);
-            femaleWheelCanvas.style.transition = 'transform 1.5s cubic-bezier(0.25, 0.1, 0.25, 1)';
-            femaleWheelCanvas.style.transform = `rotate(${targetRotation}deg)`;
-            setTimeout(() => {
-                femaleCurrentRotation = targetRotation % 360; femaleWheelCanvas.style.transition = 'none';
-                femaleWheelCanvas.style.transform = `rotate(${femaleCurrentRotation}deg)`;
-                const drawnParticipant = femaleAvailableParticipants.splice(randomIndex, 1)[0];
-                femaleAddToGroup(drawnParticipant); femaleDrawWheel();
-                if (femaleAvailableParticipants.length > 0) { femaleSpinButton.disabled = false; femaleSpinButton.innerText = 'Spin to Draw'; }
-                else { femaleDisplayFinalResults(); }
-            }, 1500);
-        }
-        function femaleAddToGroup(participant) {
-            let targetGroup;
-            if (femaleGroupA.length < 3) { femaleGroupA.push(participant); targetGroup = femaleGroupAList; }
-            else if (femaleGroupB.length < 3) { femaleGroupB.push(participant); targetGroup = femaleGroupBList; }
-            else if (femaleGroupC.length < 4) { femaleGroupC.push(participant); targetGroup = femaleGroupCList; }
-            else { femaleGroupD.push(participant); targetGroup = femaleGroupDList; }
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `<span class="participant-name">${participant.name}</span> <span class="participant-department">(${participant.department})</span>`;
-            targetGroup.appendChild(listItem);
-        }
-        function femaleDisplayFinalResults() {
-            finalResults.female = { a: femaleGroupA, b: femaleGroupB, c: femaleGroupC, d: femaleGroupD };
-            drawStatus.female = true;
-            finalResultsLink.classList.remove('disabled');
-            alert('Female Singles Draw Complete! Results are available in the Final Results tab.');
-        }
-        femaleSpinButton.addEventListener('click', femaleSpinWheel);
-
-        // --- Male Doubles Draw Logic ---
-        const doublesTeams = [
-            { name: 'Koh Hui Beng & Ow Ji Ken', department: 'CARDIOLOGY' }, { name: 'Azlan Shah & Faiz Mashood', department: 'CARDIOLOGY' },
-            { name: 'Ariff & Tantawi', department: 'CARDIOLOGY' }, { name: 'Muhd Syafiq & Ruzaidi Ramlee', department: 'NURSING' },
-            { name: 'Amirul Asyraf Abdullah & Ahmad Yahya Khirudin', department: 'NURSING' }, { name: 'Khairul Anuar & Ahmad Azahar Adnan', department: 'NURSING' },
-            { name: 'Dr Zahrin & Dr Ignatius', department: 'ANAESTHESIA & INT. CARE' }, { name: 'Mohd Syukri & Mohd Amir Hakim', department: 'ANAESTHESIA & INT. CARE' },
-            { name: 'Dzulhelmy & Mohd Hafizhin', department: 'ANAESTHESIA & INT. CARE' }, { name: 'Mohd Firdaus Ibrahim & Dr Faiz Farhan', department: 'ED & PCHC' },
-            { name: 'Dr Ahmad Syarafi & Dr Leong Ming Chern', department: 'ED & PCHC' }, { name: 'Zahid & Anas', department: 'CARDIOTHORACIC' },
-            { name: 'Izzad & Mohd Azri', department: 'CARDIOTHORACIC' }
-        ];
-        let doublesAvailableTeams = shuffle(doublesTeams);
-        let doublesGroupA = []; let doublesGroupB = []; let doublesGroupC = []; let doublesGroupD = [];
-        let doublesCurrentRotation = 0;
-        const doublesWheelCanvas = document.getElementById('doubles-wheel-canvas');
-        const doublesCtx = doublesWheelCanvas.getContext('2d');
-        const doublesSpinButton = document.getElementById('doubles-spin-button');
-        const doublesGroupAList = document.getElementById('doubles-group-a-list');
-        const doublesGroupBList = document.getElementById('doubles-group-b-list');
-        const doublesGroupCList = document.getElementById('doubles-group-c-list');
-        const doublesGroupDList = document.getElementById('doubles-group-d-list');
-        
-        function doublesDrawWheel() {
-            if (doublesAvailableTeams.length === 0) { doublesCtx.clearRect(0, 0, doublesWheelCanvas.width, doublesWheelCanvas.height); return; }
-            const centerX = doublesWheelCanvas.width / 2; const centerY = doublesWheelCanvas.height / 2;
-            const radius = Math.min(centerX, centerY) - 20; const arcSize = (360 / doublesAvailableTeams.length);
-            doublesCtx.clearRect(0, 0, doublesWheelCanvas.width, doublesWheelCanvas.height);
-            doublesCtx.strokeStyle = '#fff'; doublesCtx.lineWidth = 3;
-            doublesAvailableTeams.forEach((t, i) => {
-                const angleStart = (i * arcSize) * (Math.PI / 180);
-                const angleEnd = ((i + 1) * arcSize) * (Math.PI / 180);
-                const color = departmentColors[t.department] || '#ccc';
-                doublesCtx.beginPath(); doublesCtx.moveTo(centerX, centerY);
-                doublesCtx.arc(centerX, centerY, radius, angleStart, angleEnd);
-                doublesCtx.closePath(); doublesCtx.fillStyle = color; doublesCtx.fill(); doublesCtx.stroke();
-                doublesCtx.save(); doublesCtx.translate(centerX, centerY); doublesCtx.rotate((angleStart + angleEnd) / 2);
-                doublesCtx.fillStyle = '#fff'; doublesCtx.font = 'bold 20px "Chakra Petch", sans-serif';
-                doublesCtx.textAlign = 'right'; doublesCtx.textBaseline = 'middle';
-                const textMargin = 30; const maxTextWidth = radius - textMargin - 10;
-                const displayedName = truncateText(t.name, maxTextWidth, doublesCtx.font, doublesCtx);
-                doublesCtx.fillText(displayedName, radius - textMargin, 0); doublesCtx.restore();
-            });
-            doublesCtx.beginPath(); doublesCtx.arc(centerX, centerY, 80, 0, 2 * Math.PI);
-            doublesCtx.fillStyle = darkCardBg; doublesCtx.fill();
-            doublesCtx.strokeStyle = secondaryAccent; doublesCtx.lineWidth = 5; doublesCtx.stroke();
-        }
-        function doublesSpinWheel() {
-            if (doublesAvailableTeams.length === 0) return;
-            doublesSpinButton.disabled = true; doublesSpinButton.innerText = 'Spinning...';
-            const randomIndex = Math.floor(Math.random() * doublesAvailableTeams.length);
-            const degreesPerSegment = 360 / doublesAvailableTeams.length;
-            const targetSegmentStartAngle = randomIndex * degreesPerSegment;
-            const targetRotation = (360 * 5) + (270 - targetSegmentStartAngle) - (degreesPerSegment / 2);
-            doublesWheelCanvas.style.transition = 'transform 1.5s cubic-bezier(0.25, 0.1, 0.25, 1)';
-            doublesWheelCanvas.style.transform = `rotate(${targetRotation}deg)`;
-            setTimeout(() => {
-                doublesCurrentRotation = targetRotation % 360; doublesWheelCanvas.style.transition = 'none';
-                doublesWheelCanvas.style.transform = `rotate(${doublesCurrentRotation}deg)`;
-                const drawnTeam = doublesAvailableTeams.splice(randomIndex, 1)[0];
-                doublesAddToGroup(drawnTeam); doublesDrawWheel();
-                if (doublesAvailableTeams.length > 0) { doublesSpinButton.disabled = false; doublesSpinButton.innerText = 'Spin to Draw'; }
-                else { doublesDisplayFinalResults(); }
-            }, 1500);
-        }
-        function doublesAddToGroup(team) {
-            let targetGroup;
-            if (doublesGroupA.length < 3) { doublesGroupA.push(team); targetGroup = doublesGroupAList; }
-            else if (doublesGroupB.length < 3) { doublesGroupB.push(team); targetGroup = doublesGroupBList; }
-            else if (doublesGroupC.length < 3) { doublesGroupC.push(team); targetGroup = doublesGroupCList; }
-            else { doublesGroupD.push(team); targetGroup = doublesGroupDList; }
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `<span class="participant-name">${team.name}</span> <span class="participant-department">(${team.department})</span>`;
-            targetGroup.appendChild(listItem);
-        }
-        function doublesDisplayFinalResults() {
-            finalResults.doubles = { a: doublesGroupA, b: doublesGroupB, c: doublesGroupC, d: doublesGroupD };
-            drawStatus.doubles = true;
-            finalResultsLink.classList.remove('disabled');
-            alert('Male Doubles Draw Complete! Results are available in the Final Results tab.');
-        }
-        doublesSpinButton.addEventListener('click', doublesSpinWheel);
-        
-        // --- Female Doubles Draw Logic ---
-        const femaleDoublesTeams = [
-            { name: 'Nabila & Navanita', department: 'CARDIOLOGY' }, { name: 'Nor Azila Hamal & Nadjatul Azwa', department: 'NURSING' },
-            { name: 'Nik Hasnita Nik Ahmad & Norhidayah Mahfudz', department: 'NURSING' }, { name: 'Nur Nadiah Atiqah & Nur Athika Abd Malik', department: 'NURSING' },
-            { name: 'Dr Norhayati & Dr Siti Zubaidah', department: 'ANAESTHESIA & INT. CARE' }, { name: 'Aufa Hannan & Siti Khadijah', department: 'ANAESTHESIA & INT. CARE' },
-            { name: 'Nurul Syazwani & Siti Norfazidah', department: 'ANAESTHESIA & INT. CARE' }, { name: 'Nurbaizura Che Mohd Zol & Narmatha A/P Asogan', department: 'ED & PCHC' },
-            { name: 'Dr Wee Lee Shia & Nur Qistina', department: 'ED & PCHC' }, { name: 'Aimie & Sharahah', department: 'CARDIOTHORACIC' },
-            { name: 'Fathiyah & Arina', department: 'CARDIOTHORACIC' }
-        ];
-        let femaleDoublesAvailableTeams = shuffle(femaleDoublesTeams);
-        let femaleDoublesGroupA = []; let femaleDoublesGroupB = []; let femaleDoublesGroupC = []; let femaleDoublesGroupD = [];
-        let femaleDoublesCurrentRotation = 0;
-        const femaleDoublesWheelCanvas = document.getElementById('female-doubles-wheel-canvas');
-        const femaleDoublesCtx = femaleDoublesWheelCanvas.getContext('2d');
-        const femaleDoublesSpinButton = document.getElementById('female-doubles-spin-button');
-        const femaleDoublesGroupAList = document.getElementById('female-doubles-group-a-list');
-        const femaleDoublesGroupBList = document.getElementById('female-doubles-group-b-list');
-        const femaleDoublesGroupCList = document.getElementById('female-doubles-group-c-list');
-        const femaleDoublesGroupDList = document.getElementById('female-doubles-group-d-list');
-
-        function femaleDoublesDrawWheel() {
-            if (femaleDoublesAvailableTeams.length === 0) { femaleDoublesCtx.clearRect(0, 0, femaleDoublesWheelCanvas.width, femaleDoublesWheelCanvas.height); return; }
-            const centerX = femaleDoublesWheelCanvas.width / 2; const centerY = femaleDoublesWheelCanvas.height / 2;
-            const radius = Math.min(centerX, centerY) - 20; const arcSize = (360 / femaleDoublesAvailableTeams.length);
-            femaleDoublesCtx.clearRect(0, 0, femaleDoublesWheelCanvas.width, femaleDoublesWheelCanvas.height);
-            femaleDoublesCtx.strokeStyle = '#fff'; femaleDoublesCtx.lineWidth = 3;
-            femaleDoublesAvailableTeams.forEach((t, i) => {
-                const angleStart = (i * arcSize) * (Math.PI / 180);
-                const angleEnd = ((i + 1) * arcSize) * (Math.PI / 180);
-                const color = departmentColors[t.department] || '#ccc';
-                femaleDoublesCtx.beginPath(); femaleDoublesCtx.moveTo(centerX, centerY);
-                femaleDoublesCtx.arc(centerX, centerY, radius, angleStart, angleEnd);
-                femaleDoublesCtx.closePath(); femaleDoublesCtx.fillStyle = color; femaleDoublesCtx.fill(); femaleDoublesCtx.stroke();
-                femaleDoublesCtx.save(); femaleDoublesCtx.translate(centerX, centerY); femaleDoublesCtx.rotate((angleStart + angleEnd) / 2);
-                femaleDoublesCtx.fillStyle = '#fff'; femaleDoublesCtx.font = 'bold 20px "Chakra Petch", sans-serif';
-                femaleDoublesCtx.textAlign = 'right'; femaleDoublesCtx.textBaseline = 'middle';
-                const textMargin = 30; const maxTextWidth = radius - textMargin - 10;
-                const displayedName = truncateText(t.name, maxTextWidth, femaleDoublesCtx.font, femaleDoublesCtx);
-                femaleDoublesCtx.fillText(displayedName, radius - textMargin, 0); femaleDoublesCtx.restore();
-            });
-            femaleDoublesCtx.beginPath(); femaleDoublesCtx.arc(centerX, centerY, 80, 0, 2 * Math.PI);
-            femaleDoublesCtx.fillStyle = darkCardBg; femaleDoublesCtx.fill();
-            femaleDoublesCtx.strokeStyle = secondaryAccent; femaleDoublesCtx.lineWidth = 5; femaleDoublesCtx.stroke();
-        }
-        function femaleDoublesSpinWheel() {
-            if (femaleDoublesAvailableTeams.length === 0) { femaleDoublesDisplayFinalResults(); return; }
-            femaleDoublesSpinButton.disabled = true; femaleDoublesSpinButton.innerText = 'Spinning...';
-            const randomIndex = Math.floor(Math.random() * femaleDoublesAvailableTeams.length);
-            const degreesPerSegment = 360 / femaleDoublesAvailableTeams.length;
-            const targetSegmentStartAngle = randomIndex * degreesPerSegment;
-            const targetRotation = (360 * 5) + (270 - targetSegmentStartAngle) - (degreesPerSegment / 2);
-            femaleDoublesWheelCanvas.style.transition = 'transform 1.5s cubic-bezier(0.25, 0.1, 0.25, 1)';
-            femaleDoublesWheelCanvas.style.transform = `rotate(${targetRotation}deg)`;
-            setTimeout(() => {
-                femaleDoublesCurrentRotation = targetRotation % 360; femaleDoublesWheelCanvas.style.transition = 'none';
-                femaleDoublesWheelCanvas.style.transform = `rotate(${femaleDoublesCurrentRotation}deg)`;
-                const drawnTeam = femaleDoublesAvailableTeams.splice(randomIndex, 1)[0];
-                femaleDoublesAddToGroup(drawnTeam); femaleDoublesDrawWheel();
-                if (femaleDoublesAvailableTeams.length > 0) { femaleDoublesSpinButton.disabled = false; femaleDoublesSpinButton.innerText = 'Spin to Draw'; }
-                else { femaleDoublesDisplayFinalResults(); }
-            }, 1500);
-        }
-        function femaleDoublesAddToGroup(team) {
-            let targetGroup;
-            if (femaleDoublesGroupA.length < 2) { femaleDoublesGroupA.push(team); targetGroup = femaleDoublesGroupAList; }
-            else if (femaleDoublesGroupB.length < 3) { femaleDoublesGroupB.push(team); targetGroup = femaleDoublesGroupBList; }
-            else if (femaleDoublesGroupC.length < 3) { femaleDoublesGroupC.push(team); targetGroup = femaleDoublesGroupCList; }
-            else { femaleDoublesGroupD.push(team); targetGroup = femaleDoublesGroupDList; }
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `<span class="participant-name">${team.name}</span> <span class="participant-department">(${team.department})</span>`;
-            targetGroup.appendChild(listItem);
-        }
-        function femaleDoublesDisplayFinalResults() {
-            finalResults.femaleDoubles = { a: femaleDoublesGroupA, b: femaleDoublesGroupB, c: femaleDoublesGroupC, d: femaleDoublesGroupD };
-            drawStatus.femaleDoubles = true;
-            finalResultsLink.classList.remove('disabled');
-            alert('Female Doubles Draw Complete! Results are available in the Final Results tab.');
-        }
-        femaleDoublesSpinButton.addEventListener('click', femaleDoublesSpinWheel);
-
-        // --- Mixed Doubles Draw Logic ---
-        const mixedDoublesTeams = [
-            { name: 'Jessie Teo & Ow Ji Ken', department: 'CARDIOLOGY' }, { name: 'Faiz Mashood & Fuziana', department: 'CARDIOLOGY' },
-            { name: 'Tantawi & Nabila', department: 'CARDIOLOGY' }, { name: 'Nur Hidayatullah Muzakir & Muhammad Aman Ikmal', department: 'NURSING' },
-            { name: 'Farah Natasha & Muhammad Arrasyid', department: 'NURSING' }, { name: 'Siti Nuraisyah Ramli & Muhammad Haziq Haiqal', department: 'NURSING' },
-            { name: 'Dr Kamilah & Dr Zahir', department: 'ANAESTHESIA & INT. CARE' }, { name: 'Dzulhelmy & Siti Khadijah', department: 'ANAESTHESIA & INT. CARE' },
-            { name: 'Mohd Hafizhin & Siti Norfazidah', department: 'ANAESTHESIA & INT. CARE' }, { name: 'Ahmad Rasyid Hazmi & Norliyana Balqis', department: 'ED & PCHC' },
-            { name: 'Dr Soo Kok Wai & Suhayle Sead', department: 'ED & PCHC' }, { name: 'Dato\' Nazeri & Qalida', department: 'CARDIOTHORACIC' },
-            { name: 'Dr Nazrin & SA Hamzi', department: 'CARDIOTHORACIC' }
-        ];
-        let mixedDoublesAvailableTeams = shuffle(mixedDoublesTeams);
-        let mixedDoublesGroupA = []; let mixedDoublesGroupB = []; let mixedDoublesGroupC = []; let mixedDoublesGroupD = [];
-        let mixedDoublesCurrentRotation = 0;
-        const mixedDoublesWheelCanvas = document.getElementById('mixed-doubles-wheel-canvas');
-        const mixedDoublesCtx = mixedDoublesWheelCanvas.getContext('2d');
-        const mixedDoublesSpinButton = document.getElementById('mixed-doubles-spin-button');
-        const mixedDoublesGroupAList = document.getElementById('mixed-doubles-group-a-list');
-        const mixedDoublesGroupBList = document.getElementById('mixed-doubles-group-b-list');
-        const mixedDoublesGroupCList = document.getElementById('mixed-doubles-group-c-list');
-        const mixedDoublesGroupDList = document.getElementById('mixed-doubles-group-d-list');
-
-        function mixedDoublesDrawWheel() {
-            if (mixedDoublesAvailableTeams.length === 0) { mixedDoublesCtx.clearRect(0, 0, mixedDoublesWheelCanvas.width, mixedDoublesWheelCanvas.height); return; }
-            const centerX = mixedDoublesWheelCanvas.width / 2; const centerY = mixedDoublesWheelCanvas.height / 2;
-            const radius = Math.min(centerX, centerY) - 20; const arcSize = (360 / mixedDoublesAvailableTeams.length);
-            mixedDoublesCtx.clearRect(0, 0, mixedDoublesWheelCanvas.width, mixedDoublesWheelCanvas.height);
-            mixedDoublesCtx.strokeStyle = '#fff'; mixedDoublesCtx.lineWidth = 3;
-            mixedDoublesAvailableTeams.forEach((t, i) => {
-                const angleStart = (i * arcSize) * (Math.PI / 180);
-                const angleEnd = ((i + 1) * arcSize) * (Math.PI / 180);
-                const color = departmentColors[t.department] || '#ccc';
-                mixedDoublesCtx.beginPath(); mixedDoublesCtx.moveTo(centerX, centerY);
-                mixedDoublesCtx.arc(centerX, centerY, radius, angleStart, angleEnd);
-                mixedDoublesCtx.closePath(); mixedDoublesCtx.fillStyle = color; mixedDoublesCtx.fill(); mixedDoublesCtx.stroke();
-                mixedDoublesCtx.save(); mixedDoublesCtx.translate(centerX, centerY); mixedDoublesCtx.rotate((angleStart + angleEnd) / 2);
-                mixedDoublesCtx.fillStyle = '#fff'; mixedDoublesCtx.font = 'bold 20px "Chakra Petch", sans-serif';
-                mixedDoublesCtx.textAlign = 'right'; mixedDoublesCtx.textBaseline = 'middle';
-                const textMargin = 30; const maxTextWidth = radius - textMargin - 10;
-                const displayedName = truncateText(t.name, maxTextWidth, mixedDoublesCtx.font, mixedDoublesCtx);
-                mixedDoublesCtx.fillText(displayedName, radius - textMargin, 0); mixedDoublesCtx.restore();
-            });
-            mixedDoublesCtx.beginPath(); mixedDoublesCtx.arc(centerX, centerY, 80, 0, 2 * Math.PI);
-            mixedDoublesCtx.fillStyle = darkCardBg; mixedDoublesCtx.fill();
-            mixedDoublesCtx.strokeStyle = secondaryAccent; mixedDoublesCtx.lineWidth = 5; mixedDoublesCtx.stroke();
-        }
-        function mixedDoublesSpinWheel() {
-            if (mixedDoublesAvailableTeams.length === 0) return;
-            mixedDoublesSpinButton.disabled = true; mixedDoublesSpinButton.innerText = 'Spinning...';
-            const randomIndex = Math.floor(Math.random() * mixedDoublesAvailableTeams.length);
-            const degreesPerSegment = 360 / mixedDoublesAvailableTeams.length;
-            const targetSegmentStartAngle = randomIndex * degreesPerSegment;
-            const targetRotation = (360 * 5) + (270 - targetSegmentStartAngle) - (degreesPerSegment / 2);
-            mixedDoublesWheelCanvas.style.transition = 'transform 1.5s cubic-bezier(0.25, 0.1, 0.25, 1)';
-            mixedDoublesWheelCanvas.style.transform = `rotate(${targetRotation}deg)`;
-            setTimeout(() => {
-                mixedDoublesCurrentRotation = targetRotation % 360; mixedDoublesWheelCanvas.style.transition = 'none';
-                mixedDoublesWheelCanvas.style.transform = `rotate(${mixedDoublesCurrentRotation}deg)`;
-                const drawnTeam = mixedDoublesAvailableTeams.splice(randomIndex, 1)[0];
-                mixedDoublesAddToGroup(drawnTeam); mixedDoublesDrawWheel();
-                if (mixedDoublesAvailableTeams.length > 0) { mixedDoublesSpinButton.disabled = false; mixedDoublesSpinButton.innerText = 'Spin to Draw'; }
-                else { mixedDoublesDisplayFinalResults(); }
-            }, 1500);
-        }
-        function mixedDoublesAddToGroup(team) {
-            let targetGroup;
-            if (mixedDoublesGroupA.length < 3) { mixedDoublesGroupA.push(team); targetGroup = mixedDoublesGroupAList; }
-            else if (mixedDoublesGroupB.length < 3) { mixedDoublesGroupB.push(team); targetGroup = mixedDoublesGroupBList; }
-            else if (mixedDoublesGroupC.length < 3) { mixedDoublesGroupC.push(team); targetGroup = mixedDoublesGroupCList; }
-            else { mixedDoublesGroupD.push(team); targetGroup = mixedDoublesGroupDList; }
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `<span class="participant-name">${team.name}</span> <span class="participant-department">(${team.department})</span>`;
-            targetGroup.appendChild(listItem);
-        }
-        function mixedDoublesDisplayFinalResults() {
-            finalResults.mixedDoubles = { a: mixedDoublesGroupA, b: mixedDoublesGroupB, c: mixedDoublesGroupC, d: mixedDoublesGroupD };
-            drawStatus.mixedDoubles = true;
-            finalResultsLink.classList.remove('disabled');
-            alert('Mixed Doubles Draw Complete! Results are available in the Final Results tab.');
-        }
-        mixedDoublesSpinButton.addEventListener('click', mixedDoublesSpinWheel);
-
-        const maleDrawContainer = document.getElementById('male-draw-container');
-        const femaleDrawContainer = document.getElementById('female-draw-container');
-        const doublesDrawContainer = document.getElementById('doubles-draw-container');
-        const femaleDoublesDrawContainer = document.getElementById('female-doubles-draw-container');
-        const mixedDoublesDrawContainer = document.getElementById('mixed-doubles-draw-container');
-        const maleLink = document.getElementById('male-link');
-        const femaleLink = document.getElementById('female-link');
-        const doublesLink = document.getElementById('doubles-link');
-        const femaleDoublesLink = document.getElementById('female-doubles-link');
-        const mixedDoublesLink = document.getElementById('mixed-doubles-link');
-
-        function hideAllContainers() {
-            maleDrawContainer.style.display = 'none';
-            femaleDrawContainer.style.display = 'none';
-            doublesDrawContainer.style.display = 'none';
-            femaleDoublesDrawContainer.style.display = 'none';
-            mixedDoublesDrawContainer.style.display = 'none';
-            finalResultsDashboardContainer.style.display = 'none';
-        }
-
-        function removeAllActiveClasses() {
-            const links = document.querySelectorAll('.navbar a');
-            links.forEach(link => link.classList.remove('active'));
-        }
-
-        function showDraw(drawType) {
-            hideAllContainers();
-            removeAllActiveClasses();
-
-            if (drawType === 'male') {
-                maleDrawContainer.style.display = 'flex';
-                maleLink.classList.add('active');
-                maleDrawWheel();
-            } else if (drawType === 'female') {
-                femaleDrawContainer.style.display = 'flex';
-                femaleLink.classList.add('active');
-                femaleDrawWheel();
-            } else if (drawType === 'doubles') {
-                doublesDrawContainer.style.display = 'flex';
-                doublesLink.classList.add('active');
-                doublesDrawWheel();
-            } else if (drawType === 'female-doubles') {
-                femaleDoublesDrawContainer.style.display = 'flex';
-                femaleDoublesLink.classList.add('active');
-                femaleDoublesDrawWheel();
-            } else if (drawType === 'mixed-doubles') {
-                mixedDoublesDrawContainer.style.display = 'flex';
-                mixedDoublesLink.classList.add('active');
-                mixedDoublesDrawWheel();
-            } else if (drawType === 'final-results') {
-                finalResultsDashboardContainer.style.display = 'flex';
-                finalResultsLink.classList.add('active');
-                updateFinalDashboard();
-            }
-        }
-
-        maleLink.addEventListener('click', () => showDraw('male'));
-        femaleLink.addEventListener('click', () => showDraw('female'));
-        doublesLink.addEventListener('click', () => showDraw('doubles'));
-        femaleDoublesLink.addEventListener('click', () => showDraw('female-doubles'));
-        mixedDoublesLink.addEventListener('click', () => showDraw('mixed-doubles'));
-        finalResultsLink.addEventListener('click', () => {
-            if (!finalResultsLink.classList.contains('disabled')) {
-                showDraw('final-results');
-            }
-        });
-
-        showDraw('male');
-    </script>
 </body>
 </html>
