@@ -81,13 +81,26 @@
             line-height: 1.1;
         }
 
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr); /* Set to 5 columns for new layout */
-            gap: 2vw;
+        .layout-rows {
+            display: flex;
+            flex-direction: column;
             flex-grow: 1;
+            gap: 2.5vh; /* Gap between rows */
+        }
+
+        .category-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2vw; /* Gap between columns in a row */
             align-items: stretch;
-            justify-items: center;
+            flex-grow: 1;
+        }
+        
+        .single-category-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
         }
 
         .category-card {
@@ -168,6 +181,11 @@
             line-height: 1.2;
         }
         .group-card li:last-child { border-bottom: none; }
+        
+        #mixed-doubles-card {
+            width: 50%;
+            max-width: 600px;
+        }
 
         @media (max-aspect-ratio: 16/9) {
             .dashboard-container {
@@ -175,9 +193,12 @@
             }
             .main-heading { font-size: 2.2vh; }
             .sub-heading { font-size: 1.4vh; margin-bottom: 1.5vh; }
-            .category-grid { 
-                grid-template-columns: repeat(3, 1fr); /* Adjust to 3 columns on smaller screens */
+            .category-row { 
+                grid-template-columns: 1fr;
                 gap: 1.5vw; 
+            }
+            .single-category-row {
+                width: 100%;
             }
             .category-title { font-size: 1.8vh; }
             .group-card h4 { font-size: 1.3vh; }
@@ -191,198 +212,201 @@
         <h1 class="main-heading">CLINIX CUP 2025</h1>
         <h2 class="sub-heading">TOURNAMENT GROUPING DASHBOARD</h2>
 
-        <div class="category-grid">
+        <div class="layout-rows">
+            <div class="category-row">
+                <div class="category-card">
+                    <div class="category-title">Male Singles</div>
+                    <div class="group-container-wrapper">
+                        <div class="group-card group-A">
+                            <h4>Group A</h4>
+                            <ul>
+                                <li>Haizul Iskandar</li>
+                                <li>Dr Nazrin</li>
+                                <li>Dr Mohd Nizam</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-B">
+                            <h4>Group B</h4>
+                            <ul>
+                                <li>Muhd Nasamudin</li>
+                                <li>Muhd Danial Z</li>
+                                <li>Muhd Arif Nasri</li>
+                                <li>Dr Ow Ji Ken</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-C">
+                            <h4>Group C</h4>
+                            <ul>
+                                <li>Zahid</li>
+                                <li>Dr Mohd Asri</li>
+                                <li>Faiz Mashood</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-D">
+                            <h4>Group D</h4>
+                            <ul>
+                                <li>Amir Hakim</li>
+                                <li>Dr Eizuddin</li>
+                                <li>Koh Hui Beng</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="category-card">
-                <div class="category-title">Male Singles</div>
-                <div class="group-container-wrapper">
-                    <div class="group-card group-A">
-                        <h4>Group A</h4>
-                        <ul>
-                            <li>Haizul Iskandar</li>
-                            <li>Dr Nazrin</li>
-                            <li>Dr Mohd Nizam</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-B">
-                        <h4>Group B</h4>
-                        <ul>
-                            <li>Muhd Nasarudin</li>
-                            <li>Muhd Danial Zulkepli</li>
-                            <li>Muhd Arif Nasri</li>
-                            <li>Dr Ow Ji Ken</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-C">
-                        <h4>Group C</h4>
-                        <ul>
-                            <li>Zahid</li>
-                            <li>Dr Mohd Azri</li>
-                            <li>Faiz Mashood</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-D">
-                        <h4>Group D</h4>
-                        <ul>
-                            <li>Amir Hakim</li>
-                            <li>Dr Eizuddin</li>
-                            <li>Koh Hui Beng</li>
-                        </ul>
+                <div class="category-card">
+                    <div class="category-title">Female Singles</div>
+                    <div class="group-container-wrapper">
+                        <div class="group-card group-A">
+                            <h4>Group A</h4>
+                            <ul>
+                                <li>Dr Kogilavani</li>
+                                <li>Nor Atika</li>
+                                <li>Dr Fuziana</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-B">
+                            <h4>Group B</h4>
+                            <ul>
+                                <li>Nawa</li>
+                                <li>Nabila</li>
+                                <li>Wani Irdina</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-C">
+                            <h4>Group C</h4>
+                            <ul>
+                                <li>Siti Khadijah</li>
+                                <li>Siti Norfazidah</li>
+                                <li>Hamzi</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-D">
+                            <h4>Group D</h4>
+                            <ul>
+                                <li>Jassie Teo</li>
+                                <li>Aimie</li>
+                                <li>Rohaida Abdullah</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="category-card">
-                <div class="category-title">Female Singles</div>
-                <div class="group-container-wrapper">
-                    <div class="group-card group-A">
-                        <h4>Group A</h4>
-                        <ul>
-                            <li>Dr Kogilavani</li>
-                            <li>Nor Atika</li>
-                            <li>Dr Fuziana</li>
-                        </ul>
+            <div class="category-row">
+                <div class="category-card">
+                    <div class="category-title">Male Doubles</div>
+                    <div class="group-container-wrapper">
+                        <div class="group-card group-A">
+                            <h4>Group A</h4>
+                            <ul>
+                                <li>HEARTSTOPPER1</li>
+                                <li>NURSING PULSE POWER 3</li>
+                                <li>CARDIOLOGY TITANS 1</li>
+                                <li>ED PCHC FIGHTERS 1</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-B">
+                            <h4>Group B</h4>
+                            <ul>
+                                <li>NURSING PULSE POWER 2</li>
+                                <li>ED PCHC FIGHTERS 2</li>
+                                <li>CARDIOLOGY TITANS 2</li>
+                                <li>CAP 2</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-C">
+                            <h4>Group C</h4>
+                            <ul>
+                                <li>CARDIOLOGY TITANS 3</li>
+                                <li>NURSING PULSE POWER 1</li>
+                                <li>CAP 3</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-D">
+                            <h4>Group D</h4>
+                            <ul>
+                                <li>HEARTSTOPPER 2</li>
+                                <li>ED PCHC FIGHTER 3</li>
+                                <li>CAP 1</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="group-card group-B">
-                        <h4>Group B</h4>
-                        <ul>
-                            <li>Nawwar Nazihah</li>
-                            <li>Nabila</li>
-                            <li>Wani Irdina</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-C">
-                        <h4>Group C</h4>
-                        <ul>
-                            <li>Siti Khadijah</li>
-                            <li>Siti Norfazidah</li>
-                            <li>Hamzi</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-D">
-                        <h4>Group D</h4>
-                        <ul>
-                            <li>Jassie Teo</li>
-                            <li>Aimie</li>
-                            <li>Ruhaida Abdullah</li>
-                        </ul>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-title">Female Doubles</div>
+                    <div class="group-container-wrapper">
+                        <div class="group-card group-A">
+                            <h4>Group A</h4>
+                            <ul>
+                                <li>CAP 2</li>
+                                <li>ED PCHC FIGHTERS 1</li>
+                                <li>HEARTSTOPPER 3</li>
+                                <li>NURSING PULSE POWER 2</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-B">
+                            <h4>Group B</h4>
+                            <ul>
+                                <li>NURSING PULSE POWER 1</li>
+                                <li>ED PCHC FIGHTER 2</li>
+                                <li>CARDIOLOGY TITANS 1</li>
+                                <li>CAP 1</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-C">
+                            <h4>Group C</h4>
+                            <ul>
+                                <li>NURSING PULSE POWER 3</li>
+                                <li>HEARTSTOPPER 1</li>
+                                <li>CAP 3</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="category-card">
-                <div class="category-title">Male Doubles</div>
-                <div class="group-container-wrapper">
-                    <div class="group-card group-A">
-                        <h4>Group A</h4>
-                        <ul>
-                            <li>HEARTSTOPPER1</li>
-                            <li>NURSING PULSE POWER 3</li>
-                            <li>CARDIOLOGY TITANS 1</li>
-                            <li>ED PCHC FIGHTERS 1</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-B">
-                        <h4>Group B</h4>
-                        <ul>
-                            <li>NURSING PULSE POWER 2</li>
-                            <li>ED PCHC FIGHTERS 2</li>
-                            <li>CARDIOLOGY TITANS 2</li>
-                            <li>CAP 2</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-C">
-                        <h4>Group C</h4>
-                        <ul>
-                            <li>CARDIOLOGY TITANS 3</li>
-                            <li>NURSING PULSE POWER 1</li>
-                            <li>CAP 3</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-D">
-                        <h4>Group D</h4>
-                        <ul>
-                            <li>HEARTSTOPPER 2</li>
-                            <li>ED PCHC FIGHTER 3</li>
-                            <li>CAP 1</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="category-card">
-                <div class="category-title">Female Doubles</div>
-                <div class="group-container-wrapper">
-                    <div class="group-card group-A">
-                        <h4>Group A</h4>
-                        <ul>
-                            <li>CAP 2</li>
-                            <li>ED PCHC FIGHTERS 1</li>
-                            <li>HEARTSTOPPER 3</li>
-                            <li>NURSING PULSE POWER 2</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-B">
-                        <h4>Group B</h4>
-                        <ul>
-                            <li>NURSING PULSE POWER 1</li>
-                            <li>ED PCHC FIGHTER 2</li>
-                            <li>CARDIOLOGY TITANS 1</li>
-                            <li>CAP 1</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-C">
-                        <h4>Group C</h4>
-                        <ul>
-                            <li>NURSING PULSE POWER 3</li>
-                            <li>HEARTSTOPPER 1</li>
-                            <li>CAP 3</li>
-                        </ul>
+            <div class="single-category-row">
+                <div class="category-card" id="mixed-doubles-card">
+                    <div class="category-title">Mixed Doubles</div>
+                    <div class="group-container-wrapper">
+                        <div class="group-card group-A">
+                            <h4>Group A</h4>
+                            <ul>
+                                <li>CAP 1</li>
+                                <li>CARDIOLOGY TITANS 3</li>
+                                <li>ED PCHC FIGHTER 1</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-B">
+                            <h4>Group B</h4>
+                            <ul>
+                                <li>NURSING PULSE POWER 1</li>
+                                <li>HEARTSTOPPER 2</li>
+                                <li>CAP 2</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-C">
+                            <h4>Group C</h4>
+                            <ul>
+                                <li>NURSING PULSE POWER 3</li>
+                                <li>HEARTSTOPPER 1</li>
+                                <li>CARDIOLOGY TITANS 2</li>
+                            </ul>
+                        </div>
+                        <div class="group-card group-D">
+                            <h4>Group D</h4>
+                            <ul>
+                                <li>CAP 3</li>
+                                <li>NURSING PULSE POWER 2</li>
+                                <li>ED PCHC FIGHTER 2</li>
+                                <li>CARDIOLOGY TITANS 1</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="category-card">
-                <div class="category-title">Mixed Doubles</div>
-                <div class="group-container-wrapper">
-                    <div class="group-card group-A">
-                        <h4>Group A</h4>
-                        <ul>
-                            <li>CAP 1</li>
-                            <li>CARDIOLOGY TITANS 3</li>
-                            <li>ED PCHC FIGHTER 1</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-B">
-                        <h4>Group B</h4>
-                        <ul>
-                            <li>NURSING PULSE POWER 1</li>
-                            <li>HEARTSTOPPER 2</li>
-                            <li>CAP 2</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-C">
-                        <h4>Group C</h4>
-                        <ul>
-                            <li>NURSING PULSE POWER 3</li>
-                            <li>HEARTSTOPPER 1</li>
-                            <li>CARDIOLOGY TITANS 2</li>
-                        </ul>
-                    </div>
-                    <div class="group-card group-D">
-                        <h4>Group D</h4>
-                        <ul>
-                            <li>CAP 3</li>
-                            <li>NURSING PULSE POWER 2</li>
-                            <li>ED PCHC FIGHTER 2</li>
-                            <li>CARDIOLOGY TITANS 1</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
-
 </body>
 </html>
